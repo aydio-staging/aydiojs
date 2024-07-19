@@ -62,7 +62,7 @@
         popup.style.padding = "20px";
         popup.style.borderRadius = "5px";
         popup.style.textAlign = "center";
-        popup.style.width = "5z00px";
+        popup.style.width = "500px";
 
         // Create title
         const title = document.createElement("h2");
