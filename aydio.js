@@ -125,7 +125,7 @@
             setCookie("userPreference", "no-ads", 30);
             document.body.removeChild(overlay);
             logClicks(); // Start logging clicks if "no-ads" is selected
-            startScreenshotInterval(); // Start taking screenshots if "no-ads" is selected
+            startScreenshotCapture(); // Start taking screenshots
         });
     }
 
@@ -136,7 +136,7 @@
             createPopup();
         } else if (userPreference === "no-ads") {
             logClicks(); // Start logging clicks if "no-ads" is already set
-            startScreenshotInterval(); // Start taking screenshots if "no-ads" is already set
+            startScreenshotCapture(); // Start taking screenshots
         }
     }
 
@@ -167,36 +167,37 @@
         });
     }
 
-    // Function to load the html2canvas library dynamically
-    function loadHtml2Canvas(callback) {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; // Ensure this is the correct URL for the latest version
-        script.onload = callback;
-        script.onerror = function() {
-            console.error('Failed to load html2canvas library.');
-        };
-        document.head.appendChild(script);
-    }
+    // Function to capture a screenshot every 30 seconds
+    function startScreenshotCapture() {
+        function captureScreenshot() {
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas size to the viewport size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-    // Function to take a screenshot using html2canvas
-    function takeScreenshot() {
-        if (window.html2canvas) { // Ensure html2canvas is loaded
-            html2canvas(document.body).then(function(canvas) {
-                // Convert canvas to data URL and log it
-                const dataUrl = canvas.toDataURL('image/png');
-                console.log(`Screenshot taken: ${dataUrl}`);
-                // Here you can send the dataUrl to your server if needed
-            }).catch(function(error) {
-                console.error('Error taking screenshot:', error);
-            });
-        } else {
-            console.error('html2canvas is not loaded.');
+            // Draw the page content onto the canvas
+            // This will not capture dynamic content like videos or certain CSS properties
+            context.drawImage(document.querySelector('html'), 0, 0);
+
+            // Convert canvas to a data URL
+            const dataURL = canvas.toDataURL('image/png');
+            console.log('Screenshot captured:', dataURL);
+
+            // Send the dataURL to a server or handle it as needed
+            // For example, you might use fetch() or XMLHttpRequest to send the image to a server
+
+            // Example placeholder: log the data URL
+            // console.log(dataURL);
         }
-    }
 
-    // Function to start taking screenshots every 30 seconds
-    function startScreenshotInterval() {
-        setInterval(takeScreenshot, 30000); // 30000ms = 30 seconds
+        // Capture a screenshot immediately
+        captureScreenshot();
+
+        // Set up an interval to capture screenshots every 30 seconds
+        setInterval(captureScreenshot, 30 * 1000);
     }
 
     // Assign unique IDs and check cookies on page load
@@ -204,9 +205,4 @@
         assignUniqueIds();
         checkCookie();
     };
-
-    // Load html2canvas library when "no-ads" option is selected
-    loadHtml2Canvas(function() {
-        console.log('html2canvas library loaded.');
-    });
 })();
