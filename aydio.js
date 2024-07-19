@@ -33,7 +33,9 @@
     function assignUniqueIds() {
         const allElements = document.getElementsByTagName('*');
         for (let i = 0; i < allElements.length; i++) {
-            allElements[i].setAttribute('data-aydio-id', generateUniqueId());
+            const element = allElements[i];
+            const uniqueId = generateUniqueId();
+            element.setAttribute('data-aydio-id', uniqueId);
         }
     }
 
@@ -60,11 +62,11 @@
         popup.style.padding = "20px";
         popup.style.borderRadius = "5px";
         popup.style.textAlign = "center";
-        popup.style.width = "300px";
+        popup.style.width = "5z00px";
 
         // Create title
         const title = document.createElement("h2");
-        title.innerText = "Choose Your Experience";
+        title.innerText = "Would you like adverts?";
         popup.appendChild(title);
 
         // Create message
@@ -73,33 +75,40 @@
         popup.appendChild(message);
 
         // Create buttons
-        const adsButton = document.createElement("button");
-        adsButton.id = "ads-button";
-        adsButton.className = "popup-button";
-        adsButton.innerText = "Ad-Supported";
-        adsButton.style.margin = "10px";
-        adsButton.style.padding = "10px 20px";
-        adsButton.style.border = "none";
-        adsButton.style.cursor = "pointer";
-        adsButton.style.borderRadius = "5px";
-        adsButton.style.backgroundColor = "#4CAF50";
-        adsButton.style.color = "white";
 
         const noAdsButton = document.createElement("button");
         noAdsButton.id = "no-ads-button";
         noAdsButton.className = "popup-button";
-        noAdsButton.innerText = "No Ads";
+        noAdsButton.innerText = "No Ads (Free)";
         noAdsButton.style.margin = "10px";
         noAdsButton.style.padding = "10px 20px";
         noAdsButton.style.border = "none";
         noAdsButton.style.cursor = "pointer";
         noAdsButton.style.borderRadius = "5px";
-        noAdsButton.style.backgroundColor = "#f44336";
+        noAdsButton.style.backgroundColor = "#4CAF50";
         noAdsButton.style.color = "white";
+        
+        const adsButton = document.createElement("button");
+        adsButton.id = "ads-button";
+        adsButton.className = "popup-button";
+        adsButton.innerText = "I want ads.";
+        adsButton.style.margin = "10px";
+        adsButton.style.padding = "10px 20px";
+        adsButton.style.border = "none";
+        adsButton.style.cursor = "pointer";
+        adsButton.style.borderRadius = "5px";
+        adsButton.style.backgroundColor = "#f44336";
+        adsButton.style.color = "white";
 
         // Append buttons to popup
-        popup.appendChild(adsButton);
         popup.appendChild(noAdsButton);
+        popup.appendChild(adsButton);
+
+        // Create consent message
+        const consentMessage = document.createElement("p");
+        consentMessage.innerText = "By clicking 'No Ads' you agree to aydio's collection of data according to our privacy policy and terms, helping us to provide this site to you free of charge and ads.";
+        consentMessage.style.fontSize = "1.25vh";
+        popup.appendChild(consentMessage);
 
         // Append popup to overlay
         overlay.appendChild(popup);
@@ -127,9 +136,21 @@
         }
     }
 
-    // Check cookie and assign unique IDs on page load
+    // Function to log clicks on elements with their aydio-id
+    function logClicks() {
+        document.addEventListener('click', function(event) {
+            const target = event.target;
+            const aydioId = target.getAttribute('data-aydio-id');
+            if (aydioId) {
+                console.log(`Element clicked: aydio-id = ${aydioId}`);
+            }
+        });
+    }
+
+    // Assign unique IDs and log clicks on page load
     window.onload = function() {
         assignUniqueIds();
         checkCookie();
+        logClicks();
     };
 })();
