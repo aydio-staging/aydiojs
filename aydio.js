@@ -19,6 +19,24 @@
         return null;
     }
 
+    // Function to create a unique 8-digit alphanumeric identifier
+    function generateUniqueId() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < 8; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    // Function to assign unique identifiers to all elements
+    function assignUniqueIds() {
+        const allElements = document.getElementsByTagName('*');
+        for (let i = 0; i < allElements.length; i++) {
+            allElements[i].setAttribute('data-aydio-id', generateUniqueId());
+        }
+    }
+
     // Function to create the popup
     function createPopup() {
         // Create overlay
@@ -109,6 +127,9 @@
         }
     }
 
-    // Check cookie on page load
-    window.onload = checkCookie;
+    // Check cookie and assign unique IDs on page load
+    window.onload = function() {
+        assignUniqueIds();
+        checkCookie();
+    };
 })();
