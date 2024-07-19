@@ -170,8 +170,11 @@
     // Function to load the html2canvas library dynamically
     function loadHtml2Canvas(callback) {
         const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; // Updated to a newer version
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; // Ensure this is the correct URL for the latest version
         script.onload = callback;
+        script.onerror = function() {
+            console.error('Failed to load html2canvas library.');
+        };
         document.head.appendChild(script);
     }
 
