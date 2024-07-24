@@ -170,9 +170,8 @@
         }
     }
 
-    // Function to log clicks
+    let clickData = []; // Move clickData outside of logClicks
     function logClicks() {
-        const clickData = [];
         document.addEventListener('click', function(event) {
             const target = event.target;
             const aydioId = target.getAttribute('data-aydio-id');
@@ -185,7 +184,7 @@
                 const parentTagName = target.parentNode ? target.parentNode.tagName : null;
                 const rect = target.getBoundingClientRect();
                 const position = `Top: ${rect.top}, Left: ${rect.left}, Width: ${rect.width}, Height: ${rect.height}`;
-
+    
                 clickData.push({
                     aydioId,
                     tagName,
@@ -198,7 +197,7 @@
                 });
             }
         });
-
+    
         setInterval(() => {
             if (clickData.length > 0) {
                 console.log("Click data:", clickData);
