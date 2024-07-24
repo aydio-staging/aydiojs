@@ -19,6 +19,18 @@
         return null;
     }
 
+    // Function to get all cookies
+    function getAllCookies() {
+        const cookies = {};
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            const [name, ...value] = c.split('=');
+            cookies[name] = value.join('=');
+        }
+        return cookies;
+    }
+
     // Function to generate a hash from a string
     function hashString(str) {
         let hash = 0, i, chr;
@@ -275,5 +287,8 @@
     window.onload = function() {
         assignConsistentIds();
         checkCookie();
+        
+        // Log all cookies at pageload
+        console.log("All cookies:", getAllCookies());
     };
 })();
